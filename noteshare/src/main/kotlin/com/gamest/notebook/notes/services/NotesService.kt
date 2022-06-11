@@ -17,4 +17,6 @@ interface NotesService {
     fun findBydownloads(): List<NotesMain>
 
     fun getNoteDetails(noteId: Int): NoteDetails?
+
+    fun downloadNote(noteId: Int)
 }

@@ -12,6 +12,10 @@ data class NotesMain(
 
     val userId:String,
 
+    val userName:String,
+
+    val uploadTime:String,
+
     var fileUrl:String?,
 
     val category:String,

@@ -6,8 +6,13 @@ import com.gamest.notebook.notes.models.NoteResponse
 import com.gamest.notebook.notes.models.NotesMain
 import com.gamest.notebook.notes.services.NoteServiceImp
 import com.gamest.notebook.notes.storageService.FileServiceImp
+import com.mongodb.client.gridfs.model.GridFSFile
+import org.aspectj.util.FileUtil
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -29,6 +34,15 @@ class NotesRestController {
             val response = NoteResponse(status = "failed","wrong arguments", null)
             ResponseEntity(response,HttpStatus.OK)
         }
+    }
+
+    @GetMapping("/download")
+    fun download(@RequestParam("path") path:String):  ResponseEntity<ByteArrayResource>{
+        val loadFile =  fileService.downloadFile(path)
+        return ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType(loadFile.fileType ))
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + loadFile.filename + "\"")
+            .body( ByteArrayResource(loadFile.file))
     }
 
     @PostMapping("/findbycategory")

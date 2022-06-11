@@ -78,6 +78,10 @@ class NoteServiceImp: NotesService {
         }
     }
 
+    override fun downloadNote(noteId: Int){
+
+    }
+
     fun getSequenceNumber(sequenceName: String?): Long {
         //get sequence no
         val query = Query(Criteria.where("id").`is`(sequenceName))
