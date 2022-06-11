@@ -14,7 +14,7 @@ interface NotesService {
 
     fun findByName(name: String): List<NotesMain>
 
-    fun findBydownloads(): List<NotesMain>
+    fun findBydownloads(): List<NotesMain>?
 
     fun getNoteDetails(noteId: Int): NoteDetails?
 

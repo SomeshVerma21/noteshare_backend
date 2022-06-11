@@ -52,9 +52,13 @@ class NoteServiceImp: NotesService {
         return res
     }
 
-    override fun findBydownloads(): List<NotesMain> {
-        val res = notesRepository.findAll()
-        return res.sortedByDescending { it.downloads }
+    override fun findBydownloads(): List<NotesMain>? {
+        return try {
+            val res = notesRepository.findAll()
+            res.sortedByDescending { it.downloads }
+        }catch (e:Exception){
+            null
+        }
     }
 
     override fun getNoteDetails(noteId: Int): NoteDetails? {

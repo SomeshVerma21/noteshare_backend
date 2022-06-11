@@ -22,6 +22,8 @@ data class NotesMain(
 
     val subCategory:String,
 
+    val language:String,
+
     val tags:List<String>,
 
     var likesCount:Long?,

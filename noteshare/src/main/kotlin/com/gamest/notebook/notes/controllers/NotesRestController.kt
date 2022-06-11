@@ -51,7 +51,7 @@ class NotesRestController {
         return if (list.isNotEmpty()){
             ResponseEntity(NoteResponse("success","found",list),HttpStatus.OK)
         }else{
-            ResponseEntity(NoteResponse(status = "failed","No file found",null),HttpStatus.OK)
+            ResponseEntity(NoteResponse(status = "failed","No file found", listOf()),HttpStatus.OK)
         }
     }
 
@@ -61,7 +61,7 @@ class NotesRestController {
         return if (result.isNotEmpty()){
             ResponseEntity(NoteResponse(status = "success", message = "recommended",result),HttpStatus.OK)
         }else{
-            ResponseEntity(NoteResponse(status = "failed", message = "no file found",null),HttpStatus.OK)
+            ResponseEntity(NoteResponse(status = "failed", message = "no file found", listOf()),HttpStatus.OK)
         }
     }
 
@@ -71,7 +71,7 @@ class NotesRestController {
         return if (result.isNotEmpty())
             ResponseEntity(NoteResponse("success","notes by name",result),HttpStatus.OK)
         else{
-            ResponseEntity(NoteResponse("failed","Nothing found",null),HttpStatus.OK)
+            ResponseEntity(NoteResponse("failed","Nothing found", listOf()),HttpStatus.OK)
         }
     }
 
@@ -81,13 +81,18 @@ class NotesRestController {
         return if (result != null){
             ResponseEntity(NoteResponse("success","note details", listOf(result)),HttpStatus.OK)
         }else{
-            ResponseEntity(NoteResponse("failed","Nothing found", null ),HttpStatus.OK)
+            ResponseEntity(NoteResponse("failed","Nothing found", listOf() ),HttpStatus.OK)
         }
     }
 
     @PostMapping("/topDownloads")
     fun topDownloads():ResponseEntity<NoteResponse>{
-        return ResponseEntity(NoteResponse("success","found top notes",noteServiceImp.findBydownloads()),HttpStatus.OK)
+        val result = noteServiceImp.findBydownloads()
+        return if (result != null) {
+            ResponseEntity(NoteResponse("success", "found top notes", result), HttpStatus.OK)
+        }else{
+            ResponseEntity(NoteResponse("failed", "nothing found", listOf()), HttpStatus.OK)
+        }
     }
 
     @GetMapping("/getallcategories")
