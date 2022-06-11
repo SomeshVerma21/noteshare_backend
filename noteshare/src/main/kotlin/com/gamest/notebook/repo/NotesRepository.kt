@@ -1,8 +1,7 @@
 package com.gamest.notebook.repo
 
 import com.gamest.notebook.notes.models.NotesMain
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.mongodb.repository.MongoRepository
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository

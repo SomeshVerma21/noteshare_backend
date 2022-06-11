@@ -39,6 +39,8 @@ dependencies {
 
 	implementation("org.springframework.boot:spring-boot-starter-mail:2.6.5")
 
+	implementation ("org.springframework.boot:spring-boot-starter-data-mongodb")
+
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

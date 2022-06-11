@@ -1,6 +1,7 @@
 package com.gamest.notebook.notes.controllers
 
 import com.gamest.notebook.notes.dataresource.Categories
+import com.gamest.notebook.notes.models.NoteDetails
 import com.gamest.notebook.notes.models.NoteResponse
 import com.gamest.notebook.notes.models.NotesMain
 import com.gamest.notebook.notes.services.NoteServiceImp
@@ -60,6 +61,20 @@ class NotesRestController {
         }
     }
 
+    @GetMapping("/getnotedetails")
+    fun getNoteDetails(@RequestParam("noteid") noteId:Int): ResponseEntity<NoteResponse>{
+        val result = noteServiceImp.getNoteDetails(noteId)
+        return if (result != null){
+            ResponseEntity(NoteResponse("success","note details", listOf(result)),HttpStatus.OK)
+        }else{
+            ResponseEntity(NoteResponse("failed","Nothing found", null ),HttpStatus.OK)
+        }
+    }
+
+    @PostMapping("/topDownloads")
+    fun topDownloads():ResponseEntity<NoteResponse>{
+        return ResponseEntity(NoteResponse("success","found top notes",noteServiceImp.findBydownloads()),HttpStatus.OK)
+    }
 
     @GetMapping("/getallcategories")
     fun getAllCategories():ResponseEntity<MutableList<Categories>>{

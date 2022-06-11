@@ -1,6 +1,7 @@
 package com.gamest.notebook.notes.services
 
 import com.gamest.notebook.notes.models.DbNoteSequence
+import com.gamest.notebook.notes.models.NoteDetails
 import com.gamest.notebook.notes.models.NotesMain
 import com.gamest.notebook.repo.NotesRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,6 +50,32 @@ class NoteServiceImp: NotesService {
         val res =  notesRepository.findByName(name)
         println(res.size)
         return res
+    }
+
+    override fun findBydownloads(): List<NotesMain> {
+        val res = notesRepository.findAll()
+        return res.sortedByDescending { it.downloads }
+    }
+
+    override fun getNoteDetails(noteId: Int): NoteDetails? {
+        val res = notesRepository.findById(noteId.toLong())
+        if (res.isPresent){
+            val result = res.get()
+            return NoteDetails(
+                result.id,
+                result.name,
+                result.desc,
+                result.userId,
+                result.fileUrl,
+                result.category,
+                result.subCategory,
+                result.tags,
+                result.likesCount,
+                result.downloads,
+            )
+        }else{
+            return null
+        }
     }
 
     fun getSequenceNumber(sequenceName: String?): Long {
