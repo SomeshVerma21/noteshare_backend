@@ -28,7 +28,5 @@ data class NotesMain(
 
     var likesCount:Long?,
 
-    var comments:List<CommentUser>?,
-
     var downloads:Long?
 )

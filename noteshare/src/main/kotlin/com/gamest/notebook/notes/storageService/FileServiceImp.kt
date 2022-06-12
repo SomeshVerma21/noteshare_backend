@@ -33,7 +33,6 @@ class FileServiceImp: FileService {
         notesMain.fileUrl = fileID.toString()
         // make all count to initial as it is just uploaded
         notesMain.likesCount=0
-        notesMain.comments=null
         notesMain.downloads=0
         return noteService.saveNoteInfo(notesMain)
     }

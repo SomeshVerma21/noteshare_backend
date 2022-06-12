@@ -1,13 +1,12 @@
 package com.gamest.notebook.notes.controllers
 
 import com.gamest.notebook.notes.dataresource.Categories
-import com.gamest.notebook.notes.models.NoteDetails
 import com.gamest.notebook.notes.models.NoteResponse
 import com.gamest.notebook.notes.models.NotesMain
+import com.gamest.notebook.notes.models.comments.CMResponse
+import com.gamest.notebook.notes.models.comments.UserComment
 import com.gamest.notebook.notes.services.NoteServiceImp
 import com.gamest.notebook.notes.storageService.FileServiceImp
-import com.mongodb.client.gridfs.model.GridFSFile
-import org.aspectj.util.FileUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.http.HttpHeaders
@@ -82,6 +81,26 @@ class NotesRestController {
             ResponseEntity(NoteResponse("success","note details", listOf(result)),HttpStatus.OK)
         }else{
             ResponseEntity(NoteResponse("failed","Nothing found", listOf() ),HttpStatus.OK)
+        }
+    }
+
+    @PostMapping("/addComment")
+    fun addComment(@ModelAttribute userComment: UserComment): ResponseEntity<CMResponse>{
+        val result = noteServiceImp.addComment(userComment)
+        return if (result){
+            ResponseEntity(CMResponse("success","comment added",listOf()),HttpStatus.OK)
+        }else{
+            ResponseEntity(CMResponse("failed","something went wrong",listOf()),HttpStatus.OK)
+        }
+    }
+
+    @GetMapping("/getallcomments")
+    fun getAllComments(@RequestParam("note_id") noteId: Int): ResponseEntity<CMResponse>{
+        val result = noteServiceImp.getAllComments(noteId)
+        return if (result != null && result.size > 0 ){
+            ResponseEntity(CMResponse("success","found some comments",result),HttpStatus.OK)
+        }else{
+            ResponseEntity(CMResponse("failed","something went wrong", listOf()),HttpStatus.OK)
         }
     }
 
