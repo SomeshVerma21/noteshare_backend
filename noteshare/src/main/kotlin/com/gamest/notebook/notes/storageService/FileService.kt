@@ -8,5 +8,5 @@ import org.springframework.web.multipart.MultipartFile
 interface FileService {
     fun saveFile(uploadFile: MultipartFile, notesMain: NotesMain): NotesMain?
 
-    fun downloadFile(path:String) : LoadFile
+    fun downloadFile(path:String) : LoadFile?
 }

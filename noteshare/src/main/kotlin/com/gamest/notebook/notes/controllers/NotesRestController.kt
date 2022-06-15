@@ -38,10 +38,15 @@ class NotesRestController {
     @GetMapping("/download")
     fun download(@RequestParam("path") path:String):  ResponseEntity<ByteArrayResource>{
         val loadFile =  fileService.downloadFile(path)
-        return ResponseEntity.ok()
-            .contentType(MediaType.parseMediaType(loadFile.fileType ))
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + loadFile.filename + "\"")
-            .body( ByteArrayResource(loadFile.file))
+        return if (loadFile != null) {
+            ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(loadFile.fileType ))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + loadFile.filename + "\"")
+                .body( ByteArrayResource(loadFile.file))
+        }else{
+            ResponseEntity.notFound()
+                .build()
+        }
     }
 
     @PostMapping("/findbycategory")
@@ -64,11 +69,11 @@ class NotesRestController {
         }
     }
 
-    @PostMapping("/searchbyname")
+    @GetMapping("/searchbyname")
     fun searchByName(@RequestParam("name") name:String):ResponseEntity<NoteResponse>{
         val result = noteServiceImp.findByName(name)
         return if (result.isNotEmpty())
-            ResponseEntity(NoteResponse("success","notes by name",result),HttpStatus.OK)
+            ResponseEntity(NoteResponse("success","notes by name", result),HttpStatus.OK)
         else{
             ResponseEntity(NoteResponse("failed","Nothing found", listOf()),HttpStatus.OK)
         }

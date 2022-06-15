@@ -64,9 +64,20 @@ class NoteServiceImp: NotesService {
 
     }
 
-    override fun addComment(comment: UserComment): Boolean{
-        val collection = template.db.getCollection("notesmain")
+    override fun updateDownloads(pathUrl:String):Boolean{
         return try {
+            val collection = template.db.getCollection("notesmain")
+            collection.withCodecRegistry(pojoCodecRegistry)
+                .updateOne(eq("fileUrl",pathUrl),Updates.inc("downloads",1))
+            true
+        }catch (e:Exception){
+            false
+        }
+    }
+
+    override fun addComment(comment: UserComment): Boolean{
+        return try {
+            val collection = template.db.getCollection("notesmain")
             collection.withCodecRegistry(pojoCodecRegistry)
                 .updateOne(eq("_id",comment.note_id),Updates.push("comments",comment))
             true
@@ -115,9 +126,14 @@ class NoteServiceImp: NotesService {
     }
 
     override fun findByName(name:String):List<NotesMain>{
-        val res =  notesRepository.findByName(name)
-        println(res.size)
-        return res
+        return try {
+            val result =  notesRepository.findAll().toList()
+            println(result.size)
+            result.filter { s -> s.name == name }
+        }catch (e:Exception){
+            println(e.message)
+            listOf()
+        }
     }
 
     override fun findBydownloads(): List<NotesMain>? {

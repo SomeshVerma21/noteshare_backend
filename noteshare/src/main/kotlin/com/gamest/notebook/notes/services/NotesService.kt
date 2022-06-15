@@ -19,6 +19,8 @@ interface NotesService {
 
     fun addComment(comment: UserComment):Boolean
 
+    fun updateDownloads(pathUrl:String):Boolean
+
     fun getAllComments(noteId: Int): MutableList<UserComment>?
 
     fun getNoteDetails(noteId: Int): NoteDetails?

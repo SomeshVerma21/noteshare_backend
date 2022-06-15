@@ -37,14 +37,22 @@ class FileServiceImp: FileService {
         return noteService.saveNoteInfo(notesMain)
     }
 
-    override fun downloadFile(path: String): LoadFile {
-        val gridFile = template.findOne(Query.query(Criteria.where("_id").`is`("624e92930877f27f91ff7f72")))
-        return LoadFile(
-            gridFile.filename,
-            gridFile.metadata?.get("_contentType").toString(),
-            gridFile.metadata?.get("fileSize").toString(),
-            IOUtils.toByteArray(template.getResource(gridFile).inputStream)
-        )
+    override fun downloadFile(path: String): LoadFile? {
+        return try{
+            val gridFile = template.findOne(Query.query(Criteria.where("_id").`is`("624e92930877f27f91ff7f72")))
+            LoadFile(
+                gridFile.filename,
+                gridFile.metadata?.get("_contentType").toString(),
+                gridFile.metadata?.get("fileSize").toString(),
+                IOUtils.toByteArray(template.getResource(gridFile).inputStream)
+            ).also {
+                val resutl = noteService.updateDownloads(path)
+                if (!resutl)
+                    throw Exception("something went wrong")
+            }
+        }catch (e:Exception){
+            null
+        }
     }
 
 
