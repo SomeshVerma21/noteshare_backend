@@ -34,10 +34,19 @@ class NoteServiceImp: NotesService {
     @Autowired private lateinit var mongoOperations:MongoOperations
     @Autowired private lateinit var template: MongoTemplate
 
+    val pojoCodecRegistry = fromRegistries(
+        MongoClientSettings.getDefaultCodecRegistry(),
+        fromProviders(PojoCodecProvider.builder().automatic(true).build())
+    )
+
     override fun saveNoteInfo(note:NotesMain):NotesMain?{
         note.id = getSequenceNumber("note_sequence")
+        val collection = template.db.getCollection("usermain")
         return try {
-            notesRepository.save(note)
+            notesRepository.save(note).also {
+                collection.withCodecRegistry(pojoCodecRegistry)
+                    .updateOne(eq("_id",it.userId),Updates.push("file_uploaded",it.id))
+            }
         } catch (e: Exception) {
             null
         }
@@ -57,14 +66,6 @@ class NoteServiceImp: NotesService {
 
     override fun addComment(comment: UserComment): Boolean{
         val collection = template.db.getCollection("notesmain")
-        val pojoCodecRegistry = fromRegistries(
-            MongoClientSettings.getDefaultCodecRegistry(),
-            fromProviders(PojoCodecProvider.builder().automatic(true).build())
-        )
-//        val settings = MongoClientSettings.builder()
-//            .codecRegistry(pojoCodecRegistry)
-//            .build()
-//        val mongoClient = MongoClients.create(settings)
         return try {
             collection.withCodecRegistry(pojoCodecRegistry)
                 .updateOne(eq("_id",comment.note_id),Updates.push("comments",comment))

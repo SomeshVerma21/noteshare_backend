@@ -39,7 +39,6 @@ class FileServiceImp: FileService {
 
     override fun downloadFile(path: String): LoadFile {
         val gridFile = template.findOne(Query.query(Criteria.where("_id").`is`("624e92930877f27f91ff7f72")))
-
         return LoadFile(
             gridFile.filename,
             gridFile.metadata?.get("_contentType").toString(),

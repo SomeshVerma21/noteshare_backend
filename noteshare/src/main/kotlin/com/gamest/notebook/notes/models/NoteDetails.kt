@@ -7,7 +7,7 @@ data class NoteDetails(
 
     val desc:String,
 
-    val uploaderName:String,
+    val uploader_id:Int,
 
     var fileUrl:String?,
 

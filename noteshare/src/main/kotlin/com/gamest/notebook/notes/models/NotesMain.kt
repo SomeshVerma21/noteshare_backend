@@ -10,7 +10,7 @@ data class NotesMain(
 
     val desc:String,
 
-    val userId:String,
+    val userId:Int,
 
     val userName:String,
 

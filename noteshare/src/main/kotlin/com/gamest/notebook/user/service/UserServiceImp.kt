@@ -5,6 +5,7 @@ import com.gamest.notebook.user.models.DbSequence
 import com.gamest.notebook.user.models.NewUser
 import com.gamest.notebook.user.models.Response
 import com.gamest.notebook.user.models.UserLoginOP
+import com.gamest.notebook.user.models.resProfile.ProfileData
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.FindAndModifyOptions.options
 import org.springframework.data.mongodb.core.MongoOperations
@@ -19,7 +20,7 @@ import java.util.*
 
 @Service
  class UserServiceImp(@Autowired private val userRepo: CreateUserRepo,
-            @Autowired private val mongoOperations: MongoOperations): UserService {
+                      @Autowired private val mongoOperations: MongoOperations): UserService {
 
     override fun addNewUser( user:NewUser):Response{
         val checkEmail = userRepo.findByEmail(user.email)
@@ -50,6 +51,25 @@ import java.util.*
                 Response(status = "failed", message = "incorrect password",null)
         }else
             Response(status = "failed", message = "user not found",null)
+    }
+
+    override fun getUserProfile(userId:Int):ProfileData?{
+        return try {
+            val response = userRepo.findById(userId.toLong())
+            var result:ProfileData? = null
+            if (response.isPresent){
+                result = ProfileData(
+                    id = response.get().id,
+                    firstname = response.get().firstname,
+                    lastname = response.get().lastname,
+                    email = response.get().email,
+                    isEmailverified = response.get().isemailverified
+                )
+            }
+            result
+        }catch (e:Exception){
+            null
+        }
     }
 
     fun getSequenceNumber(sequenceName: String?): Long {

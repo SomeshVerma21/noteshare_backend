@@ -26,8 +26,8 @@ class NotesRestController {
     @PostMapping("/upload")
     fun upload(@RequestParam("file")file: MultipartFile,@ModelAttribute notesMain: NotesMain ):ResponseEntity<NoteResponse>{
         val result =  fileService.saveFile(file,notesMain)
-        return if (result!=null){
-            val response = NoteResponse(status = "success","file uploaded", listOf(result))
+        return if (result != null){
+            val response = NoteResponse(status = "success","file uploaded", listOf())
             ResponseEntity(response,HttpStatus.OK)
         }else{
             val response = NoteResponse(status = "failed","wrong arguments", null)

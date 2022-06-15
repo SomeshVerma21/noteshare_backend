@@ -5,7 +5,6 @@ import javax.persistence.*
 
 @Document("usermain")
 data class NewUser(
-
     @Id
     var id:Long=1,
 
@@ -22,5 +21,5 @@ data class NewUser(
     val password:String,
 
     @Column(name = "isemailverified")
-    val isemailverified:String?
+    val isemailverified:Boolean?
 )
