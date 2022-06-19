@@ -1,4 +1,4 @@
-package com.gamest.notebook.user.models.resProfile
+package com.gamest.notebook.user.models
 
 data class ProfileData(
     var id:Long=1,
@@ -8,6 +8,8 @@ data class ProfileData(
     val lastname:String,
 
     val email:String,
+
+    val profileImage:String,
 
     val isEmailverified:Boolean?
 )

@@ -1,6 +1,5 @@
 package com.gamest.notebook.notes.controllers
 
-import com.gamest.notebook.notes.dataresource.Categories
 import com.gamest.notebook.notes.models.NoteResponse
 import com.gamest.notebook.notes.models.NotesMain
 import com.gamest.notebook.notes.models.comments.CMResponse
@@ -120,8 +119,11 @@ class NotesRestController {
     }
 
     @GetMapping("/getallcategories")
-    fun getAllCategories():ResponseEntity<MutableList<Categories>>{
+    fun getAllCategories():ResponseEntity<NoteResponse>{
         val list = fileService.getAllCategories()
-        return ResponseEntity(list,HttpStatus.OK)
+        return if (list != null){
+            ResponseEntity(NoteResponse("success","found some categories",list),HttpStatus.OK)
+        }else
+            ResponseEntity(NoteResponse("failed","nothing found", listOf()),HttpStatus.OK)
     }
 }

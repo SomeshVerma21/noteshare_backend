@@ -26,7 +26,7 @@ data class NotesMain(
 
     val tags:List<String>,
 
-    var likesCount:Long?,
+    var likesCount:Long? = 0,
 
-    var downloads:Long?
+    var downloads:Long? = 0
 )
