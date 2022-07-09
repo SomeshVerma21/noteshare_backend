@@ -1,12 +1,11 @@
 package com.gamest.notebook.user.service
 
-import com.gamest.notebook.notes.models.comments.UserComment
+import com.gamest.notebook.Utils
 import com.gamest.notebook.repo.CreateUserRepo
 import com.gamest.notebook.user.models.*
 import com.mongodb.MongoClientSettings
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Updates
-import org.bson.Document
 import org.bson.codecs.configuration.CodecRegistries
 import org.bson.codecs.pojo.PojoCodecProvider
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +19,6 @@ import org.springframework.data.mongodb.core.query.Query.query
 import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.coroutines.coroutineContext
 
 
 @Service
@@ -68,16 +66,14 @@ import kotlin.coroutines.coroutineContext
             val response = userRepo.findById(userId.toLong())
             var result: ProfileData? = null
             if (response.isPresent){
-                result = getProfileUrl(userId)?.let {
-                    ProfileData(
-                        id = response.get().id,
-                        firstname = response.get().firstname,
-                        lastname = response.get().lastname,
-                        email = response.get().email,
-                        profileImage = "http://localhost:8080/api/v1/user/profile-image/$it",
-                        isEmailverified = response.get().isemailverified
-                    )
-                }
+                result = ProfileData(
+                    id = response.get().id,
+                    firstname = response.get().firstname,
+                    lastname = response.get().lastname,
+                    email = response.get().email,
+                    profileImage = getProfileUrl(userId),
+                    isEmailverified = response.get().isemailverified
+                )
             }
             result
         }catch (e:Exception){
@@ -85,7 +81,7 @@ import kotlin.coroutines.coroutineContext
         }
     }
 
-    private fun getProfileUrl(userId: Int):String?{
+    private fun getProfileUrl(userId: Int):String{
         return try {
             val collection = template.db.getCollection("usermain")
             val result = collection.find(Filters.eq("_id", userId))
@@ -93,13 +89,13 @@ import kotlin.coroutines.coroutineContext
             val list = mutableListOf<String>()
             if (document != null) {
                 for (i in document) {
-                    list.add(i)
+                    list.add(Utils.BASE_URL_PROFILE_IMAAGE+i)
                 }
-            }
-            println(list.last())
-            list.last()
+                list.last()
+            }else
+                ""
         }catch (e:Exception){
-            null
+            ""
         }
     }
 

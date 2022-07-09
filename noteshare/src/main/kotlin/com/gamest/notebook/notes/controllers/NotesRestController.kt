@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
-
 @RestController
 @RequestMapping("/api/v1/notes")
 class NotesRestController {
@@ -79,7 +78,7 @@ class NotesRestController {
     }
 
     @GetMapping("/getnotedetails")
-    fun getNoteDetails(@RequestParam("noteid") noteId:Int): ResponseEntity<NoteResponse>{
+    fun getNoteDetails(@RequestParam("note_id") noteId:Int): ResponseEntity<NoteResponse>{
         val result = noteServiceImp.getNoteDetails(noteId)
         return if (result != null){
             ResponseEntity(NoteResponse("success","note details", listOf(result)),HttpStatus.OK)
