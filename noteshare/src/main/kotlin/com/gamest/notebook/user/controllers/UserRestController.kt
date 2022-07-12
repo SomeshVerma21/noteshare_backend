@@ -5,6 +5,7 @@ import com.gamest.notebook.notes.models.NotesMain
 import com.gamest.notebook.notes.storageService.FileServiceImp
 import com.gamest.notebook.user.models.LoginUser
 import com.gamest.notebook.user.models.NewUser
+import com.gamest.notebook.user.models.NewUserInput
 import com.gamest.notebook.user.models.Response
 import com.gamest.notebook.user.service.UserServiceImp
 import org.apache.poi.ss.formula.functions.T
@@ -29,7 +30,7 @@ class UserRestController {
     }
 
     @PostMapping("/register")
-    fun registerUser(@RequestBody user: NewUser):ResponseEntity<Response>{
+    fun registerUser(@RequestBody user: NewUserInput):ResponseEntity<Response>{
         val response = userService.addNewUser(user)
         return ResponseEntity(response,HttpStatus.OK)
     }
@@ -68,6 +69,16 @@ class UserRestController {
     @PostMapping("/upload/profile-image")
     fun uploadProfileImage(@RequestParam("file")file: MultipartFile,@RequestParam("user_id") userId: Int):ResponseEntity<Response>{
         val result =  fileService.uploadProfileImage(file, userId)
+        return if (result){
+            ResponseEntity(Response("success","uploaded", listOf<T>()),HttpStatus.OK)
+        }else{
+            ResponseEntity(Response("success","uploaded", listOf<T>()),HttpStatus.OK)
+        }
+    }
+
+    @PostMapping("/update/profile-image")
+    fun updateProfileImage(@RequestParam("file")file: MultipartFile,@RequestParam("user_id") userId: Int):ResponseEntity<Response>{
+        val result =  fileService.updateProfileImage(file, userId)
         return if (result){
             ResponseEntity(Response("success","uploaded", listOf<T>()),HttpStatus.OK)
         }else{

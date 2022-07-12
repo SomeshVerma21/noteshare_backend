@@ -37,12 +37,8 @@ class NoteServiceImp: NotesService {
 
     override fun saveNoteInfo(note:NotesMain):NotesMain?{
         note.id = getSequenceNumber("note_sequence")
-        val collection = template.db.getCollection("usermain")
         return try {
-            notesRepository.save(note).also {
-                collection.withCodecRegistry(pojoCodecRegistry)
-                    .updateOne(eq("_id",it.userId),Updates.push("file_uploaded",it.id))
-            }
+            notesRepository.save(note)
         } catch (e: Exception) {
             null
         }
@@ -124,10 +120,12 @@ class NoteServiceImp: NotesService {
                 result.id,
                 result.name,
                 result.desc,
+                result.userName,
                 result.userId,
                 result.fileUrl,
                 result.category,
                 result.subCategory,
+                result.price,
                 result.tags,
                 result.likesCount,
                 result.downloads,

@@ -81,7 +81,23 @@ class FileServiceImp: FileService {
                 uploadFile.inputStream, uploadFile.originalFilename, uploadFile.contentType, metadata
             )
             val fileId = fileID.toString() + "/" + uploadFile.originalFilename
-            userService.uploadProfileImage(fileId,userId)
+            userService.uploadProfileImage(fileId ,userId)
+        }catch (e:Exception){
+            false
+        }
+    }
+
+    override fun updateProfileImage(uploadFile: MultipartFile, userId:Int): Boolean{
+        return try {
+            val metadata = BasicDBObject()
+            metadata["fileSize"] = uploadFile.size
+            metadata["contentType"] = uploadFile.contentType
+
+            val fileID = template.store(
+                uploadFile.inputStream, uploadFile.originalFilename, uploadFile.contentType, metadata
+            )
+            val fileId = fileID.toString() + "/" + uploadFile.originalFilename
+            userService.updateProfileImage(fileId ,userId)
         }catch (e:Exception){
             false
         }

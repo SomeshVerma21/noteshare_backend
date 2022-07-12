@@ -24,6 +24,8 @@ data class NotesMain(
 
     val language:String,
 
+    val price:String,
+
     val tags:List<String>,
 
     var likesCount:Long? = 0,

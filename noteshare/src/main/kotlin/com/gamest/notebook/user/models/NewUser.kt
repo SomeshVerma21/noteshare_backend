@@ -8,14 +8,14 @@ data class NewUser(
     @Id
     var id:Long=1,
 
-    @Column(name = "firstname")
-    val firstname:String,
-
-    @Column(name = "lastname")
-    val lastname:String,
+    @Column(name = "fullname")
+    val fullName:String,
 
     @Column(name = "email")
     val email:String,
+
+    @Column(name = "mobile")
+    val mobile:Int = 0,
 
     @Column(name = "password")
     val password:String,

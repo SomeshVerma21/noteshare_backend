@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository
 interface CreateUserRepo: PagingAndSortingRepository<NewUser,Long> {
 
     fun findByEmail(email: String):List<NewUser>
+
+
 }

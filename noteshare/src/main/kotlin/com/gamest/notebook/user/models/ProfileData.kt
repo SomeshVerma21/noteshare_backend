@@ -1,13 +1,13 @@
 package com.gamest.notebook.user.models
 
 data class ProfileData(
-    var id:Long=1,
+    var id:Long,
 
-    val firstname:String,
-
-    val lastname:String,
+    val fullName:String,
 
     val email:String,
+
+    val mobile:Int,
 
     val profileImage:String,
 

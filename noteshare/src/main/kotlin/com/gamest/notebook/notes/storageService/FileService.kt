@@ -14,4 +14,5 @@ interface FileService {
     fun uploadProfileImage(uploadFile: MultipartFile, userId:Int): Boolean
 
     fun loadProfileImage(path:String) : ProfileImage?
+    fun updateProfileImage(uploadFile: MultipartFile, userId: Int): Boolean
 }
