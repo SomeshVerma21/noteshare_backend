@@ -4,6 +4,7 @@ import com.gamest.notebook.notes.models.NoteResponse
 import com.gamest.notebook.notes.models.NotesMain
 import com.gamest.notebook.notes.models.comments.CMResponse
 import com.gamest.notebook.notes.models.comments.UserComment
+import com.gamest.notebook.notes.models.ratings.RatingInput
 import com.gamest.notebook.notes.services.NoteServiceImp
 import com.gamest.notebook.notes.storageService.FileServiceImp
 import org.springframework.beans.factory.annotation.Autowired
@@ -104,6 +105,16 @@ class NotesRestController {
             ResponseEntity(CMResponse("success","found some comments",result),HttpStatus.OK)
         }else{
             ResponseEntity(CMResponse("failed","something went wrong", listOf()),HttpStatus.OK)
+        }
+    }
+
+    @PostMapping("/add-rating")
+    fun addRating(@ModelAttribute ratingInput: RatingInput): ResponseEntity<CMResponse>{
+        val result = noteServiceImp.addRating(ratingInput)
+        return if (result){
+            ResponseEntity(CMResponse("success","rating added",listOf()),HttpStatus.OK)
+        }else{
+            ResponseEntity(CMResponse("failed","something went wrong",listOf()),HttpStatus.OK)
         }
     }
 

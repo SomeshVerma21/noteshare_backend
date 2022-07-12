@@ -36,7 +36,7 @@ import java.util.*
             Response(status = "failed", message = "user already exits",null).also { println("user already exits") }
         else{
             val response = userRepo.save(NewUser(id = getSequenceNumber("usersid"), fullName = user.fullName,
-                email = user.email , password = user.password , isemailverified = false, mobile = 0 ))
+                email = user.email , password = user.password , isemailverified = false, mobile = 0 , isProfileVerified = false))
             return Response(status = "success", message = "user created", null)
         }
 
@@ -70,7 +70,8 @@ import java.util.*
                     email = response.get().email,
                     mobile = response.get().mobile,
                     profileImage = getProfileUrl(userId),
-                    isEmailverified = response.get().isemailverified
+                    isProfileVerified = if(response.get().isProfileVerified == null) false else response.get().isProfileVerified,
+                    isEmailverified = if(response.get().isemailverified == null) false else response.get().isemailverified
                 )
             }
             result

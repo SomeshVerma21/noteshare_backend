@@ -11,5 +11,7 @@ data class ProfileData(
 
     val profileImage:String,
 
+    val isProfileVerified:Boolean?,
+
     val isEmailverified:Boolean?
 )

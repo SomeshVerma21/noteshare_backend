@@ -20,6 +20,9 @@ data class NewUser(
     @Column(name = "password")
     val password:String,
 
+    @Column(name = "isprofileverified")
+    var isProfileVerified:Boolean?,
+
     @Column(name = "isemailverified")
     val isemailverified:Boolean?
 )

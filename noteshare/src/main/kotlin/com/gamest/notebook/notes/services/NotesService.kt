@@ -3,6 +3,7 @@ package com.gamest.notebook.notes.services
 import com.gamest.notebook.notes.models.NoteDetails
 import com.gamest.notebook.notes.models.NotesMain
 import com.gamest.notebook.notes.models.comments.UserComment
+import com.gamest.notebook.notes.models.ratings.RatingInput
 
 interface NotesService {
     fun saveNoteInfo(note:NotesMain): NotesMain?
@@ -26,4 +27,5 @@ interface NotesService {
     fun getNoteDetails(noteId: Int): NoteDetails?
 
     fun downloadNote(noteId: Int)
+    fun addRating(ratingInput: RatingInput): Boolean
 }

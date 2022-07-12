@@ -5,12 +5,15 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 @EnableMongoRepositories
 interface CreateUserRepo: PagingAndSortingRepository<NewUser,Long> {
 
     fun findByEmail(email: String):List<NewUser>
+
+    override fun findById(userId:Long): Optional<NewUser>
 
 
 }

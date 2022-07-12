@@ -4,8 +4,11 @@ import com.gamest.notebook.notes.models.DbNoteSequence
 import com.gamest.notebook.notes.models.NoteDetails
 import com.gamest.notebook.notes.models.NotesMain
 import com.gamest.notebook.notes.models.comments.UserComment
+import com.gamest.notebook.notes.models.ratings.RatingInput
+import com.gamest.notebook.notes.models.ratings.Ratings
 import com.gamest.notebook.repo.CommentsRepository
 import com.gamest.notebook.repo.NotesRepository
+import com.gamest.notebook.repo.UserRatingsRepository
 import com.mongodb.MongoClientSettings
 import com.mongodb.client.model.Filters.eq
 import com.mongodb.client.model.Updates
@@ -27,6 +30,7 @@ import java.util.*
 class NoteServiceImp: NotesService {
     @Autowired private lateinit var notesRepository: NotesRepository
     @Autowired private lateinit var commentsRepository: CommentsRepository
+    @Autowired private lateinit var userRatingsRepository: UserRatingsRepository
     @Autowired private lateinit var mongoOperations:MongoOperations
     @Autowired private lateinit var template: MongoTemplate
 
@@ -75,8 +79,16 @@ class NoteServiceImp: NotesService {
             true
         }catch (e:Exception){
             false
-        }finally {
-            getAllComments(noteId = comment.noteId)
+        }
+    }
+
+    override fun addRating(ratingInput: RatingInput): Boolean{
+        return try {
+            val result = userRatingsRepository.save(Ratings(getSequenceNumber("ratings"), rating = ratingInput.rating,
+                ratingText = ratingInput.ratingText, userId = ratingInput.userId, noteId = ratingInput.noteId))
+            true
+        }catch (e:Exception){
+            false
         }
     }
 
